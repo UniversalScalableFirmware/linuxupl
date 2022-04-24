@@ -73,7 +73,8 @@ BuildBootParamsAndBootToLinux (
   //
   GuidHob             = GetFirstGuidHob (&gUniversalPayloadLinuxCommandLineGuid);
   LinuxCommandLineHob = (UNIVERSAL_PAYLOAD_LINUX_COMMAND_LINE *)GET_GUID_HOB_DATA (GuidHob);
-  DEBUG ((DEBUG_INFO, "LinuxCommandLineHob CommandLine = 0x%x\n", (UINTN)LinuxCommandLineHob->CommandLine));
+  DEBUG ((DEBUG_INFO, "LinuxCommandLineHob CommandLine address= 0x%x\n", (UINTN)LinuxCommandLineHob->CommandLine));
+  DEBUG ((DEBUG_INFO, "LinuxCommandLineHob CommandLine is: %a\n", LinuxCommandLineHob->CommandLine));
   params->cmd_line_ptr = (UINTN)LinuxCommandLineHob->CommandLine;
 
   DEBUG ((DEBUG_INFO, "ExtraData->Entry[IndexOfLinuxKernel].Size = 0x%x\n", (UINTN)ExtraData->Entry[IndexOfLinuxKernel].Size));

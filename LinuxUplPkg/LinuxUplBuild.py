@@ -111,11 +111,13 @@ def BuildUniversalPayload(Args, MacroList):
     EntryModuleInf = os.path.normpath("LinuxUplPkg/LinuxPayloadEntry/LinuxUniversalPayloadEntry.inf")
     DscPath = os.path.normpath("LinuxUplPkg/LinuxUplPkg.dsc")
     BuildDir = os.path.join(os.environ['WORKSPACE'], os.path.normpath("Build/LinuxUplPkg"))
+    RootBuildDir = os.path.join(os.environ['WORKSPACE'], os.path.normpath("Build"))
     ModuleReportPath = os.path.join(BuildDir, "LinuxUniversalPayloadEntry.txt")
     UpldInfoFile = os.path.join(BuildDir, "UniversalPayloadInfo.bin")
     LinuxBootParams = os.path.join(BuildDir, "LinuxBootParams.bin")
     VmLinux = os.path.join(BuildDir, "VmLinux.bin")
     Stack = os.path.join(BuildDir, "Stack.bin")
+    LinuxPayloadInit = os.path.join(RootBuildDir, "LinuxPayloadInit.sh")
 
     EntryOutputDir = os.path.join(BuildDir, f"{BuildTarget}_{ElfToolChain}", os.path.normpath("IA32/LinuxUplPkg/LinuxPayloadEntry/LinuxUniversalPayloadEntry/DEBUG/LinuxUniversalPayloadEntry.dll"))
 
@@ -197,6 +199,13 @@ def BuildUniversalPayload(Args, MacroList):
     fp.close()
 
     #
+    # Creat a Alignment file
+    #
+    fp = open(LinuxPayloadInit, 'w')
+    fp.write("export UPL_ALIGMENT=%s"%hex(boot_params.kernel_alignment))
+    fp.close()
+
+    #
     # Copy the UniversalPayloadInfo.bin, Boot_params.bin, vmlinux.bin, Intiramfs.bin, stack.bin as a sections in elf format Universal Payload entry.
     #
     remove_section = f'"{ObjcopyPath}" -I elf32-i386 -O elf32-i386 --remove-section .upld_info --remove-section .upld.linux --remove-section .upld.uefi.fv --remove-section .upld.initramfs --remove-section .upld.bootparams --remove-section .upld.stack {EntryOutputDir}'
@@ -210,7 +219,7 @@ def BuildUniversalPayload(Args, MacroList):
     RunCommand(add_section)
     RunCommand(set_section)
 
-    shutil.copy (EntryOutputDir, os.path.join(BuildDir, 'UniversalPayload.elf'))
+    shutil.copy (EntryOutputDir, os.path.join(RootBuildDir, 'LinuxUniversalPayload.elf'))
 
 def main():
     parser = argparse.ArgumentParser(description='For building Linux Universal Payload')

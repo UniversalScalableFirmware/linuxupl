@@ -20,10 +20,10 @@ while getopts "hK:I:b:t:" arg; do
     I)
       InitramfsPath=$OPTARG
       ;;
-    b)
+    t)
       ToolChain=$OPTARG
       ;;
-    t)
+    b)
       BuildTarget=$OPTARG
       ;;
   esac
