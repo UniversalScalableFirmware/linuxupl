@@ -29,7 +29,7 @@ while getopts "hK:I:b:t:" arg; do
   esac
 done
 
-if [ $BzImagePath = "" ]; then
+if [[ $BzImagePath = "" ]]; then
   exit 1
 fi
 
@@ -46,7 +46,7 @@ make -C ./BaseTools
 cd $WORKSPACE
 
 
-if [ $InitramfsPath = "" ]; then
+if [[ $InitramfsPath = "" ]]; then
   python LinuxUplPkg/LinuxUplBuild.py -t $ToolChain -b $BuildTarget --KernelPath $BzImagePath
 else
   python LinuxUplPkg/LinuxUplBuild.py -t $ToolChain -b $BuildTarget --KernelPath $BzImagePath --InitramfsPath $InitramfsPath
