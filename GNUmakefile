@@ -19,8 +19,8 @@ OBJECT_FILES =  \
     $(OUTPUT_DIR)/QuickSort.o \
     $(OUTPUT_DIR)/LinuxUniversalPayloadEntry.o \
     $(OUTPUT_DIR)/MemoryMapLib.o \
-	$(OUTPUT_DIR)/InternalSwitchStack.o \
-	$(OUTPUT_DIR)/LoadLinux.o \
+    $(OUTPUT_DIR)/InternalSwitchStack.o \
+    $(OUTPUT_DIR)/LoadLinux.o \
     $(OUTPUT_DIR)/Hob.o
 
 STATIC_LIBRARY_FILES =  \
@@ -31,7 +31,7 @@ STATIC_LIBRARY_FILES =  \
 #
 
 CODA_TARGET = $(WORKSPACE)Build/DEBUG/LinuxUniversalPayloadEntry.elf \
-              
+
 #
 # Default target, which will build dependent libraries in addition to source files
 #
@@ -49,7 +49,7 @@ pbuild: init $(CODA_TARGET)
 #
 
 mbuild: init gen_libs $(CODA_TARGET)
-	
+
 
 #
 # Build Target used in multi-thread build mode, which will bypass the init and gen_libs targets
@@ -70,7 +70,7 @@ fds: mbuild gen_fds
 init: info dirs
 
 info:
-	-@echo Building ... 
+	-@echo Building ...
 	-@echo $(WORKSPACE)
 	-@echo $(MAKE_FILE)
 
@@ -118,7 +118,7 @@ $(DEBUG_DIR)/LinuxUniversalPayloadEntry.elf : $(MAKE_FILE)
 $(DEBUG_DIR)/LinuxUniversalPayloadEntry.elf : $(STATIC_LIBRARY_FILES)
 	clang -o $(WORKSPACE)Build/DEBUG/LinuxUniversalPayloadEntry.elf -nostdlib -Wl,--entry,_ModuleEntryPoint -flto -Wl,-melf_i386 -Wl,--oformat,elf32-i386 -Wl,--start-group,$(STATIC_LIBRARY_FILES),--end-group -march=i586 -target i686-pc-linux-gnu -fuse-ld=lld
 	echo $(WORKSPACE)Build/DEBUG/LinuxUniversalPayloadEntry.elf
-	
+
 $(OUTPUT_DIR)/InternalSwitchStack.o : $(MAKE_FILE)
 $(OUTPUT_DIR)/InternalSwitchStack.o : $(WORKSPACE)LinuxPayloadEntry/InternalSwitchStack.nasm
 	nasm -f elf32 -o $(WORKSPACE)/Build/OUTPUT/InternalSwitchStack.o $(WORKSPACE)LinuxPayloadEntry/InternalSwitchStack.nasm

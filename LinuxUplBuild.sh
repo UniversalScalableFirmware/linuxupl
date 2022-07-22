@@ -13,7 +13,7 @@ while getopts "hK:I:b:t:w:" arg; do
       echo "  -I: optional, initramfs path"
       echo "  -b: build target, default is DEBUG"
       echo "  -t: tool chain, default is GCC5"
-	  echo "  -w: WithoutEdk2, default is TRUE"
+      echo "  -w: WithoutEdk2, default is TRUE"
       exit 0
       ;;
     K)
@@ -31,34 +31,33 @@ while getopts "hK:I:b:t:w:" arg; do
   esac
 done
 
-if [ $BzImagePath = "" ]; then
+if [[ $BzImagePath = "" ]]; then
   exit 1
 fi
 
 export WORKSPACE=$(cd `dirname $0`; pwd)
 if [[ $WithoutEdk2 = "FLASE" ]]; then
-	export PACKAGES_PATH="$WORKSPACE:$WORKSPACE/../edk2"
+  export PACKAGES_PATH="$WORKSPACE:$WORKSPACE/../Edk2"
 fi
 while [ $# -gt 0 ]; do
   shift
 done
 
 if [[ $WithoutEdk2 = "FALSE" ]]; then
-	cd $WORKSPACE/../edk2
-	source ./edksetup.sh
-	make -C ./BaseTools
-	cd $WORKSPACE
-	if [[ $InitramfsPath = "" ]]; then
-	  python LinuxUplPkg/LinuxUplBuild.py -t $ToolChain -b $BuildTarget --KernelPath $BzImagePath
-	else
-	  python LinuxUplPkg/LinuxUplBuild.py -t $ToolChain -b $BuildTarget --KernelPath $BzImagePath --InitramfsPath $InitramfsPath
-	fi
+  cd $WORKSPACE/../Edk2
+  source ./edksetup.sh
+  make -C ./BaseTools
+  cd $WORKSPACE
+  if [[ $InitramfsPath = "" ]]; then
+    python LinuxUplPkg/LinuxUplBuild.py -t $ToolChain -b $BuildTarget --KernelPath $BzImagePath
+  else
+    python LinuxUplPkg/LinuxUplBuild.py -t $ToolChain -b $BuildTarget --KernelPath $BzImagePath --InitramfsPath $InitramfsPath
+  fi
 else
-	cd $WORKSPACE
-	if [[ $InitramfsPath = "" ]]; then
-	  python LinuxUplBuild.py -t $ToolChain -b $BuildTarget --KernelPath $BzImagePath
-	else
-	  python LinuxUplBuild.py -t $ToolChain -b $BuildTarget --KernelPath $BzImagePath --InitramfsPath $InitramfsPath
-	fi
-fi	
-	
+  cd $WORKSPACE
+  if [[ $InitramfsPath = "" ]]; then
+    python LinuxUplBuild.py -t $ToolChain -b $BuildTarget --KernelPath $BzImagePath
+  else
+    python LinuxUplBuild.py -t $ToolChain -b $BuildTarget --KernelPath $BzImagePath --InitramfsPath $InitramfsPath
+  fi
+fi

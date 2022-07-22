@@ -259,7 +259,7 @@ typedef UINTN RETURN_STATUS;
 #define RETURN_NOT_FOUND             ENCODE_ERROR (14)
 #define RETURN_SUCCESS               0
 #define EFI_SUCCESS                  RETURN_SUCCESS
-#define EFI_ABORTED               	 RETURN_ABORTED
+#define EFI_ABORTED                  RETURN_ABORTED
 #define EFI_NOT_FOUND                RETURN_NOT_FOUND
 //
 // The EFI memory allocation functions work in units of EFI_PAGEs that are
@@ -586,7 +586,7 @@ typedef
 void
 ( *SWITCH_STACK_ENTRY_POINT)(
    void                      *Context1   ,
-   void                      *Context2   
+   void                      *Context2
   );
 
 void
@@ -595,7 +595,7 @@ InternalSwitchStack (
      void                      *Context1    ,
      void                      *Context2    ,
      void                      *NewStack
-  );  
+  );
 
 typedef
 INTN

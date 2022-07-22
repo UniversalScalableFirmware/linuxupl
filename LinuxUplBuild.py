@@ -75,8 +75,8 @@ def RunCommand(cmd):
     p.communicate()
     if p.returncode != 0:
         print("- Failed - error happened when run command: %s"%cmd)
-        raise Exception( f'Invalid result: { p.returncode }' )
-        
+        raise Exception('Invalid result: {}'.format (p.returncode))
+
 def BuildUniversalPayload(Args, MacroList):
     BuildTarget = Args.Target
     LinuxKernal = Args.KernelPath
@@ -94,7 +94,7 @@ def BuildUniversalPayload(Args, MacroList):
         print("- Failed - only support CLANGDWARF or GCC5 as tool chain")
         sys.exit(1)
     try:
-        RunCommand(f'"{ObjcopyPath}" --version')
+        RunCommand('"{}" --version'.format (ObjcopyPath))
     except:
         print("- Failed - Please check if LLVM or objcopy is installed or if CLANG_BIN is set correctly")
         sys.exit(1)
@@ -120,7 +120,7 @@ def BuildUniversalPayload(Args, MacroList):
     for key in MacroList:
         Defines +=" -D {0}={1}".format(key, MacroList[key])
 
-    
+
     #
     # Buid Universal Payload Information Section ".upld_info"
     #
@@ -197,11 +197,26 @@ def BuildUniversalPayload(Args, MacroList):
     #
     # Copy the UniversalPayloadInfo.bin, Boot_params.bin, vmlinux.bin, Intiramfs.bin, stack.bin as a sections in elf format Universal Payload entry.
     #
-    remove_section = f'"{ObjcopyPath}" -I elf32-i386 -O elf32-i386 --remove-section .upld_info --remove-section .upld.linux --remove-section .upld.uefi.fv --remove-section .upld.initramfs --remove-section .upld.bootparams --remove-section .upld.stack {EntryOutputDir}'
-    add_section    = f'"{ObjcopyPath}" -I elf32-i386 -O elf32-i386 --add-section .upld_info={UpldInfoFile} --add-section .upld.linux={VmLinux} --add-section .upld.bootparams={LinuxBootParams} --add-section .upld.stack={Stack} {EntryOutputDir}'
-    set_section    = f'"{ObjcopyPath}" -I elf32-i386 -O elf32-i386 --set-section-alignment .upld.upld_info=16 --set-section-alignment .upld.linux={boot_params.kernel_alignment} --set-section-alignment .upld.stack={CPU_STACK_ALIGNMENT} {EntryOutputDir}'
+    remove_section = '"{}" -I elf32-i386 -O elf32-i386 --remove-section .upld_info --remove-section .upld.linux --remove-section .upld.uefi.fv --remove-section .upld.initramfs --remove-section .upld.bootparams --remove-section .upld.stack {}'.format (
+                     ObjcopyPath,
+                     EntryOutputDir
+                     )
+    add_section    = '"{}" -I elf32-i386 -O elf32-i386 --add-section .upld_info={} --add-section .upld.linux={} --add-section .upld.bootparams={} --add-section .upld.stack={} {}'.format (
+                     ObjcopyPath,
+                     UpldInfoFile,
+                     VmLinux,
+                     LinuxBootParams,
+                     Stack,
+                     EntryOutputDir
+                     )
+    set_section    = '"{}" -I elf32-i386 -O elf32-i386 --set-section-alignment .upld.upld_info=16 --set-section-alignment .upld.linux={} --set-section-alignment .upld.stack={} {}'.format (
+                     ObjcopyPath,
+                     boot_params.kernel_alignment,
+                     CPU_STACK_ALIGNMENT,
+                     EntryOutputDir
+                     )
     if Initramfs != "":
-        add_section    += f' --add-section .upld.initramfs={Initramfs}'
+        add_section    += ' --add-section .upld.initramfs={}'.format (Initramfs)
         set_section    += ' --set-section-alignment .upld.initramfs=16'
 
     RunCommand(remove_section)
