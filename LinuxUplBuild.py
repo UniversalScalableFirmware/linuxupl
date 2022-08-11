@@ -60,7 +60,9 @@ class Linux_HEADER(LittleEndianStructure):
         ('relocatable_kernel',   c_uint8),              # 0x234
         ('Reserved7',            ARRAY(c_char, 0x2B)),  # 0x235
         ('init_size',            c_uint32),             # 0x260
-        ('Reserved8',            ARRAY(c_char, 0xD9C)), # 0x264 - 0x1000
+        ('Reserved8',            ARRAY(c_char, 0x59C)), # 0x264
+        ('command_line',         ARRAY(c_char, 0x100)), # 0x800
+        ('Reserved9',            ARRAY(c_char, 0x700)), # 0x900 -0xFFF
         ]
 
 def RunCommand(cmd):
@@ -148,6 +150,7 @@ def BuildUniversalPayload(Args, MacroList):
         boot_params.orig_video_isVGA  = 1
         boot_params.orig_video_points = 16
         boot_params.loader_type = 0xff
+        boot_params.command_line = "loglevel=7 earlyprintk=serial,ttyS0,115200 console=ttyS0,115200 disable_mtrr_cleanup"
         setup_sects = LinuxHeader.setup_sects
         #
         # The 32-bit (non-real-mode) kernel starts at offset (setup_sects+1)*512

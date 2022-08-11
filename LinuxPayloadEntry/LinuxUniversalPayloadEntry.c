@@ -99,9 +99,7 @@ BuildBootParamsAndBootToLinux (
   //
   // Get command line.
   //
-  GuidHob             = GetFirstGuidHob (&gUniversalPayloadLinuxCommandLineGuid);
-  LinuxCommandLineHob = (UNIVERSAL_PAYLOAD_LINUX_COMMAND_LINE *)GET_GUID_HOB_DATA (GuidHob);
-  params->cmd_line_ptr = (UINTN)LinuxCommandLineHob->CommandLine;
+  params->cmd_line_ptr = (UINTN)params->command_line;
 
   //
   // Create memory map.
