@@ -54,6 +54,9 @@ if [[ $WithoutEdk2 = "FALSE" ]]; then
     python LinuxUplPkg/LinuxUplBuild.py -t $ToolChain -b $BuildTarget --KernelPath $BzImagePath --InitramfsPath $InitramfsPath
   fi
 else
+  rm -rf $WORKSPACE/Build
+  cd $WORKSPACE/LinuxUplPkg
+  make
   cd $WORKSPACE
   if [[ $InitramfsPath = "" ]]; then
     python LinuxUplBuild.py -t $ToolChain -b $BuildTarget --KernelPath $BzImagePath
