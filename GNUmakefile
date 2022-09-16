@@ -24,7 +24,7 @@ OBJECT_FILES =  \
     $(OUTPUT_DIR)/Hob.o
 
 STATIC_LIBRARY_FILES =  \
-    $(OUTPUT_DIR)/LinuxUniversalPayloadEntry.so
+    $(OUTPUT_DIR)/LinuxUniversalPayloadEntry.lib
 
 #
 # Overridable Target Macro Definitions
@@ -97,26 +97,26 @@ gen_fds:
 
 $(OUTPUT_DIR)/MemoryMapLib.o : $(MAKE_FILE)
 $(OUTPUT_DIR)/MemoryMapLib.o : $(WORKSPACE)LinuxPayloadEntry/MemoryMapLib.c
-	clang -march=i586 -target i686-pc-linux-gnu -c -o $(WORKSPACE)Build/OUTPUT/MemoryMapLib.o $(WORKSPACE)LinuxPayloadEntry/MemoryMapLib.c
+	gcc -MMD -MF -g -Os -fshort-wchar -fno-builtin -fno-strict-aliasing -Wall -Werror -Wno-array-bounds -fno-common -ffunction-sections -fdata-sections -DSTRING_ARRAY_NAME=BaseLibStrings -m32 -march=i586 -malign-double -fno-stack-protector -fno-asynchronous-unwind-tables -Wno-address -fno-pic -fno-pie -flto -Os -D DISABLE_NEW_DEPRECATED_INTERFACES -Wno-unused-but-set-variable -c -o $(WORKSPACE)Build/OUTPUT/MemoryMapLib.o $(WORKSPACE)LinuxPayloadEntry/MemoryMapLib.c
 
 $(OUTPUT_DIR)/QuickSort.o : $(MAKE_FILE)
 $(OUTPUT_DIR)/QuickSort.o : $(WORKSPACE)LinuxPayloadEntry/QuickSort.c
-	clang -march=i586 -target i686-pc-linux-gnu -c -o $(WORKSPACE)Build/OUTPUT/QuickSort.o $(WORKSPACE)LinuxPayloadEntry/QuickSort.c
+	gcc -MMD -MF -g -Os -fshort-wchar -fno-builtin -fno-strict-aliasing -Wall -Werror -Wno-array-bounds -fno-common -ffunction-sections -fdata-sections -DSTRING_ARRAY_NAME=BaseLibStrings -m32 -march=i586 -malign-double -fno-stack-protector -fno-asynchronous-unwind-tables -Wno-address -fno-pic -fno-pie -flto -Os -D DISABLE_NEW_DEPRECATED_INTERFACES -Wno-unused-but-set-variable -c -o $(WORKSPACE)Build/OUTPUT/QuickSort.o $(WORKSPACE)LinuxPayloadEntry/QuickSort.c
 
 $(OUTPUT_DIR)/LinuxUniversalPayloadEntry.o : $(MAKE_FILE)
 $(OUTPUT_DIR)/LinuxUniversalPayloadEntry.o : $(WORKSPACE)LinuxPayloadEntry/LinuxUniversalPayloadEntry.c
-	clang -march=i586 -target i686-pc-linux-gnu -c -o $(WORKSPACE)Build/OUTPUT/LinuxUniversalPayloadEntry.o $(WORKSPACE)LinuxPayloadEntry/LinuxUniversalPayloadEntry.c
+	gcc -MMD -MF -g -Os -fshort-wchar -fno-builtin -fno-strict-aliasing -Wall -Werror -Wno-array-bounds -fno-common -ffunction-sections -fdata-sections -DSTRING_ARRAY_NAME=BaseLibStrings -m32 -march=i586 -malign-double -fno-stack-protector -fno-asynchronous-unwind-tables -Wno-address -fno-pic -fno-pie -flto -Os -D DISABLE_NEW_DEPRECATED_INTERFACES -Wno-unused-but-set-variable -c -o $(WORKSPACE)Build/OUTPUT/LinuxUniversalPayloadEntry.o $(WORKSPACE)LinuxPayloadEntry/LinuxUniversalPayloadEntry.c
 
 $(OUTPUT_DIR)/Hob.o : $(MAKE_FILE)
 $(OUTPUT_DIR)/Hob.o : $(WORKSPACE)LinuxPayloadEntry/Hob.c
-	clang -march=i586 -target i686-pc-linux-gnu -c -o $(WORKSPACE)Build/OUTPUT/Hob.o $(WORKSPACE)LinuxPayloadEntry/Hob.c
+	gcc -MMD -MF -g -Os -fshort-wchar -fno-builtin -fno-strict-aliasing -Wall -Werror -Wno-array-bounds -fno-common -ffunction-sections -fdata-sections -DSTRING_ARRAY_NAME=BaseLibStrings -m32 -march=i586 -malign-double -fno-stack-protector -fno-asynchronous-unwind-tables -Wno-address -fno-pic -fno-pie -flto -Os -D DISABLE_NEW_DEPRECATED_INTERFACES -Wno-unused-but-set-variable -c -o $(WORKSPACE)Build/OUTPUT/Hob.o $(WORKSPACE)LinuxPayloadEntry/Hob.c
 
-$(OUTPUT_DIR)/LinuxUniversalPayloadEntry.so : $(OBJECT_FILES)
-	llvm-ar cr $(WORKSPACE)Build/OUTPUT/LinuxUniversalPayloadEntry.so $(OBJECT_FILES)
+$(OUTPUT_DIR)/LinuxUniversalPayloadEntry.lib : $(OBJECT_FILES)
+	gcc-ar cr $(WORKSPACE)Build/OUTPUT/LinuxUniversalPayloadEntry.lib $(OBJECT_FILES)
 
 $(DEBUG_DIR)/LinuxUniversalPayloadEntry.elf : $(MAKE_FILE)
 $(DEBUG_DIR)/LinuxUniversalPayloadEntry.elf : $(STATIC_LIBRARY_FILES)
-	clang -o $(WORKSPACE)Build/DEBUG/LinuxUniversalPayloadEntry.elf -nostdlib -Wl,--entry,_ModuleEntryPoint -flto -Wl,-melf_i386 -Wl,--oformat,elf32-i386 -Wl,--start-group,$(STATIC_LIBRARY_FILES),--end-group -march=i586 -target i686-pc-linux-gnu -fuse-ld=lld
+	gcc -o $(WORKSPACE)Build/DEBUG/LinuxUniversalPayloadEntry.elf -nostdlib -Wl,--entry,_ModuleEntryPoint -u _ModuleEntryPoint -flto -Os -Wl,-m,elf_i386,--oformat=elf32-i386 -g -Os -fshort-wchar -fno-builtin -fno-strict-aliasing -Wall -Werror -Wno-array-bounds -fno-common -ffunction-sections -fdata-sections -DSTRING_ARRAY_NAME=LinuxUniversalPayloadEntryStrings -m32 -Wl,--start-group,$(STATIC_LIBRARY_FILES),--end-group -march=i586 -malign-double -fno-stack-protector -fno-asynchronous-unwind-tables -Wno-address -fno-pic -fno-pie -flto -Os -D DISABLE_NEW_DEPRECATED_INTERFACES -Wno-unused-but-set-variable 
 	echo $(WORKSPACE)Build/DEBUG/LinuxUniversalPayloadEntry.elf
 
 $(OUTPUT_DIR)/InternalSwitchStack.o : $(MAKE_FILE)

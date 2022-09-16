@@ -66,7 +66,6 @@ BuildBootParamsAndBootToLinux (
   UINTN                                 IndexOfInitramfs;
   UINTN                                 IndexOfBootParams;
   UINTN                                 Index;
-  UNIVERSAL_PAYLOAD_LINUX_COMMAND_LINE  *LinuxCommandLineHob;
   EFI_MEMORY_DESCRIPTOR                 MemoryMap[E820MAX];
   UINTN                                 MemoryMapCount;
   MemoryMapCount = E820MAX;
